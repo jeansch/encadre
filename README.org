@@ -1,0 +1,334 @@
+#+TITLE: This is the 'cadre' framework !
+
+This is the cadre framework engine.
+
+* Introduction
+
+It is a simple web framework, without hard dependencies to base web framework.
+Right now, the only implementation of the underlying framework available is 'flask'.
+
+* Things you can do with it
+
+** Install it !
+
+#+begin_example shell
+python setup.py develop
+#+end_example
+
+** Create an App
+
+Your app *MUST* be packaged ! (also your controllers).
+
+*** setup.py
+
+#+begin_example python
+from setuptools import setup
+
+console_scripts = """
+cadre-test-app-serve = cadre_test_app:serve
+cadre-test-app-dump-routes = cadre_test_app:dump_routes
+
+"""
+
+setup(name='cadre_test_app',
+      version='0.1.0',
+      description="Cadre_Test_App framework",
+      author="Ubity Awesome Dev Team",
+      author_email='dev@ubity.com',
+      packages=['cadre_test_app'],
+      install_requires=["Cadre"],
+      entry_points={'console_scripts': console_scripts,
+                    'cadre_test_app.controllers': [
+                        'hello = cadre_test_app_hello']},
+      license='GPLv3')
+#+end_example python
+
+*** main (cadre_test_app/__init__.py)
+
+#+begin_example python
+import sys
+from cadre import Cadre
+
+class Cadre_Test_App(Cadre):
+    pass
+
+def serve():
+    if len(sys.argv) != 2:
+        print("Usage: %s config.ini")
+        sys.exit(1)
+    Cadre_Test_App(sys.argv[1]).serve()
+
+# tool to dump routes
+def dump_routes():
+    if len(sys.argv) != 2:
+        print("Usage: %s config.ini")
+        sys.exit(1)
+    Cadre_Test_App(sys.argv[1]).dump_routes()
+#+end_example
+
+*** config.ini
+
+Should contains at least a section telling that we are using /flask/ (as this is the only sub framework implemented.
+The section name is you app name (ie: *cadre_test_app*).
+
+#+begin_example
+[cadre_test_app]
+framework = flask
+#+end_example
+
+Optionnaly a *[flask]* section to give to 'flask'.
+
+#+begin_example
+[flask]
+PORT = 5001
+DEBUG = true
+HOST = 0.0.0.0
+#+end_example
+
+Optionnaly the *loggers* section.
+#+begin_example
+[loggers]
+keys = root, cadre, cadre_flask
+
+[logger_root]
+handlers =
+
+[logger_cadre]
+level = DEBUG
+handlers = console
+qualname = cadre
+
+[logger_cadre_flask]
+level = DEBUG
+handlers = console
+qualname = cadre_flask
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[formatter_generic]
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+#+end_example
+
+*** a controller (cadre_test_app_hello/__init__.py)
+
+#+begin_example python
+from cadre import Controller
+
+
+class Hello(Controller):
+    """ A very polite controller """
+
+    def index__(self):
+        """ Says hello ! """
+        return "Hello world 0"
+
+
+class Hello_2(Controller):
+    """ A very polite controller (version 2) """
+
+    def index__(self):
+        """ Says hello ! """
+        return "Hello world"
+
+    def to(self, who):
+        """ Says hello to whom ask for """
+        return "Hello %s !" % who
+
+    def foo(self):
+        return "Foo"
+
+    def foo_(self):
+        return "Foo with an '_' at the end !"
+
+    def bar_GET(self):
+        return "Bar"
+
+    def baz_POST(self):
+        return "Baz"
+
+    def qux_GET_POST(self):
+        return "Qux"
+#+end_example
+
+** Run you app
+
+#+begin_example
+python setup.py develop
+cadre_test_app-serve config.ini
+#+end_example
+
+** Query it
+
+*** Simple query
+
+#+begin_example
+curl http://localhost:5001/hello/
+#+end_example
+
+*** Specific version of a controller
+
+**** Using headers
+#+begin_example
+curl http://localhost:5001/hello/ -H X-cadre_test_app-version:0
+#+end_example
+
+**** Using URL prefix
+
+You can set:
+
+#+begin_example
+versioning = prefix
+#+end_example
+
+In you're application section in the configuration file.
+Doing so will prepend the version as prefix to each routes.
+
+**** First version
+
+By default, without specifying any version number, the first version of a controller is *0*.
+To set a different version number, use the *first_version* keyword in your application's section configuration file.
+
+#+begin_example
+first_version = 1
+#+end_example
+
+*** Parameters
+
+Routes are constructed using the controllers, method names and method args.
+
+In the following example,
+
+#+begin_example
+class Foo(Controller):
+
+    def bar(self, baz):
+        pass
+#+end_example
+
+The matching route will be: */foo/bar/<baz>*
+
+For example querying */foo/bar/123* would call the *bar()* method with the value *123* for the *baz* parameter.
+
+*** Args
+
+Args are the url-encoded key=value style args after the ? in the URL.
+They are available in requests.args.
+
+#+begin_example
+class Foo(Controller):
+
+    def bar(self):
+        from cadre import request
+        request.args.get('qwe')
+#+end_example
+
+
+*** Headers
+
+#+begin_example
+class Foo(Controller):
+
+    def bar(self):
+        from cadre import request
+        request.headers.get('X-Magic-Header')
+#+end_example
+
+*** Cookies
+
+#+begin_example
+class Foo(Controller):
+
+    def bar_needs_cookie(self):
+        from cadre import request
+        request.cookies.get('my_great_cookie')
+
+    def baz_set_cookie(self):
+        from cadre import request
+        request.cookies.set('my_great_cookie', 'my_great_value')
+#+end_example
+
+
+*** JSON
+
+#+begin_example
+class Foo(Controller):
+
+    def bar(self):
+        from cadre import request
+        request.json  # containt an object,
+        # mostlikely a dict of the received JSON
+#+end_example
+
+** Dump routes
+
+#+begin_example
+python setup.py develop  # if not done already
+cadre_test_app-dump-routes
+#+end_example
+
+** Run with UWSGI
+
+You can use UWSGI to run your app.
+For that, you will need some UWSGI configuration and loader.
+
+*** configuration
+
+Can be added in /config.ini/
+
+#+begin_example
+[uwsgi]
+http = localhost:5001
+file = cadre_test_app.wsgi
+#+end_example
+
+*** loader cadre_test_app.wsgi
+#+begin_example python
+from cadre_test_app import Cadre_Test_App
+application = Cadre_Test_App("config.ini").get_wsgi_app()
+#+end_example
+
+*** start it
+
+#+begin_example
+uwsgi config.ini
+#+end_example
+
+
+* Running 'cadre' tests
+
+#+begin_example shell
+pip install nose coverage
+make tests
+#+end_example
+
+* Nice features (not yet documented)
+
+- Custom error handling
+- *before* and *after* hooks
+- Automatic detection of missing tests
+- Validation of input JSON using decorator
+
+* Things to do as soon as possible
+
+- [X] Send a file
+- [X] Handle query args
+- [X] Return HTTP code on error
+- [X] Get cookie
+- [X] Set cookie
+- [X] Add controllers test and runtime
+- [X] walk sub __subclasses
+- [X] Honor version in the flask routes
+- [X] Raise a +meaningfull+ 405 if method is missing (route existing from another version)
+- [X] Honor the verb
+- [X] Make uwsgi friendly (returning an app)
+- [X] Add a uwsgi example
+- [X] Add __before__ __after__
+- [X] Add json
+- [X] Get and Set cookies

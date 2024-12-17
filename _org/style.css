@@ -1,0 +1,158 @@
+@media print {
+  .noprint {
+    display: none;
+  }
+}
+@media screen {
+  .noscreen {
+    display: none;
+  }
+}
+html {
+  font-family: arial;
+  font-size: 12pt;
+}
+#body > h1 {
+  margin-top: 64px;
+  text-align: center;
+  margin-bottom: 64px;
+}
+.logo {
+  position: absolute;
+  right: 32px;
+  top: 8px;
+  margin-bottom: 100px;
+}
+li {
+  list-style-type: none;
+}
+.section-number {
+  color: #9d80b3;
+  padding-right: 10pt;
+}
+h1 {
+  color: #2c0449;
+  font-size: 24pt;
+}
+h2 {
+  color: #2c0449;
+  font-size: 20pt;
+}
+h3 {
+  color: #2c0449;
+  font-size: 16pt;
+}
+.side-title {
+  color: #2c0449;
+  font-size: 16pt;
+  font-weight: bold;
+}
+:link {
+  border-bottom: 1px dotted #65427e;
+  color: #2c0449;
+  text-decoration: none;
+}
+:visited {
+  border-bottom: 1px dotted #65427e;
+  color: #9d80b3;
+  text-decoration: none;
+}
+:link:hover,
+:visited:hover {
+  color: #65427e;
+}
+b {
+  color: #2c0449;
+}
+code {
+  background-color: #f4e7fd;
+  border: 1px solid #6a4d7f;
+  border-radius: 1pt;
+  font-size: 90%;
+}
+pre code {
+  background-color: none;
+  border: none;
+}
+pre {
+  background-color: #f4e7fd;
+  font-family: courier, monospace;
+  font-size: 90%;
+  overflow: auto;
+  border: 1px solid #6a4d7f;
+  border-radius: 4pt;
+  box-shadow: 2px 2px 3px #9d80b3;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10pt;
+  margin-top: 15pt;
+  padding: 5pt;
+}
+textarea {
+  overflow-x: auto;
+}
+img {
+  border: 1px solid #6a4d7f;
+  border-radius: 4pt;
+  box-shadow: 2px 2px 3px #9d80b3;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10pt;
+  margin-top: 15pt;
+  padding: 5pt;
+}
+.noshadow {
+  border: none;
+  box-shadow: none;
+}
+dt {
+  font-weight: bold;
+}
+table {
+  background: #ebfaf9;
+  border: 1px solid #6a4d7f;
+  border-radius: 4pt;
+  box-shadow: 2px 2px 3px #9d80b3;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10pt;
+  margin-top: 15pt;
+  padding: 5pt;
+}
+.root {
+  border-bottom: none;
+}
+th {
+  background: #d1faf7;
+  border: 1px solid #75f0e8;
+  border-radius: 1pt;
+  padding: 5px;
+  vertical-align: top;
+}
+td {
+  background: #ebfaf9;
+  border: 1px solid #99e5e0;
+  border-radius: 1pt;
+  font-family: courier, monospace;
+  padding: 2px;
+  vertical-align: top;
+}
+#src_file {
+  padding: 8px;
+  float: right;
+  font-size: 10px;
+  color: #ccc;
+}
+.task-status {
+  margin-right: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+.task-status .todo {
+  background: red;
+  color: white;
+}
+.task-status .done {
+  background: green;
+  color: white;
+}

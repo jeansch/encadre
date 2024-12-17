@@ -1,0 +1,208 @@
+// Paramètres principaux
+// ---------------------
+
+@main-font-size: 12pt;
+@main-hue: 275;
+@table-hue: 176;
+
+.border(@color, @radius: 1pt) {
+    border: 1px solid darken(@color, 20%);
+    border-radius: @radius;
+}
+
+.header(@level) {
+    color: @dark-color;
+    font-size: @main-font-size + (4 - @level) * 4pt;
+}
+
+.spacing() {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10pt;
+    margin-top:  15pt;
+    padding: 5pt;
+}
+
+.shadow() {
+    .border(@light-color, 4pt);
+    box-shadow: 2px 2px 3px @light-color;
+    .spacing();
+}
+
+// Paramètres dérivés
+// ------------------
+
+@dark-color: hsl(@main-hue, 90%, 15%);
+@light-color: hsl(@main-hue, 25%, 60%);
+@mixed-color: mix(@dark-color, @light-color);
+@background-color: hsl(@main-hue, 85%, 95%);
+
+@table-color: hsl(@table-hue, 60%, 95%);
+@title-color: hsl(@table-hue, 80%, 90%);
+
+// Disposition générale
+// --------------------
+
+@media print  { .noprint  { display: none; } }
+@media screen { .noscreen { display: none; } }
+
+html {
+    font-family: arial;
+    font-size: @main-font-size;
+}
+
+
+// Title
+#body > h1 {
+    margin-top: 64px;
+    text-align: center;
+    margin-bottom: 64px;
+}
+
+.logo {
+    position: absolute;
+    right: 32px;
+    top: 8px;
+    margin-bottom: 100px;
+}
+
+li {  list-style-type: none; }
+// Titres
+// ------
+
+.section-number {
+    color: @light-color;
+    padding-right: 10pt;
+}
+
+h1 {
+    .header(1);
+}
+
+h2 {
+    .header(2);
+}
+
+h3 {
+    .header(3);
+}
+
+.side-title {
+    .header(3);
+    font-weight: bold;
+}
+
+// Liens
+// -----
+
+:link {
+    border-bottom: 1px dotted @mixed-color;
+    color: @dark-color;
+    text-decoration: none;
+}
+
+:visited {
+    border-bottom: 1px dotted @mixed-color;
+    color: @light-color;
+    text-decoration: none;
+}
+
+:link:hover, :visited:hover {
+                 color: @mixed-color;
+             }
+
+// Exemples
+// --------
+
+b {
+    color: @dark-color;
+}
+
+code {
+    background-color: @background-color;
+    .border(@light-color);
+    font-size: 90%;
+}
+
+pre code {
+    background-color: none;
+    border: none;
+}
+
+pre {
+    background-color: @background-color;
+    font-family: courier, monospace;
+    font-size: 90%;
+    overflow: auto;
+    .shadow();
+}
+
+textarea {
+    overflow-x: auto;
+}
+
+// Images
+// ------
+
+img {
+    .shadow();
+}
+
+.noshadow {
+    border: none;
+    box-shadow: none;
+}
+
+// Enumérations
+// ------------
+
+dt {
+    font-weight: bold;
+}
+
+// Tables
+// ------
+
+table {
+    background: @table-color;
+    .shadow();
+}
+.root {
+    border-bottom: none;
+}
+th {
+    background: @title-color;
+    .border(@title-color);
+    padding: 5px;
+    vertical-align: top;
+}
+
+td {
+    background: @table-color;
+    .border(@table-color);
+    font-family: courier, monospace;
+    padding: 2px;
+    vertical-align: top;
+}
+
+
+#src_file {
+    padding: 8px;
+    float: right;
+    font-size:10px;
+    color: #ccc;
+}
+
+.task-status {
+    margin-right: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    .todo {
+        background: red;
+        color: white;
+    }
+    .done {
+        background: green;
+        color: white;
+    }
+}
