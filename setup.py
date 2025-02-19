@@ -6,13 +6,13 @@ cadre-test-app-dump-routes = cadre_test_app:dump_routes
 """
 
 setup(name='cadre',
-      version='0.1.0',
+      version='0.1.1',
       description="Cadre framework",
       author="Jean Schurger",
       author_email='jean@schurger.org',
       packages=['cadre', 'cadre_flask'],
       install_requires=['Flask', 'fastjsonschema', 'flask-cors',
-                        'decorator', 'nose', 'coverage'],
+                        'decorator', 'nose', 'coverage', 'flask_jwt_extended'],
       entry_points={
           'console_scripts': console_scripts,
           'cadre.frameworks':

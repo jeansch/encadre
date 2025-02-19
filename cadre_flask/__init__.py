@@ -3,7 +3,7 @@ import re
 import logging
 from flask import Flask, request, send_file, abort
 from flask_cors import CORS
-
+from flask_jwt_extended import JWTManager
 from cadre import Framework
 
 logger = logging.getLogger(__name__)
@@ -32,6 +32,8 @@ class FlaskFramework(Framework):
             CORS(self.flask_app)
         else:
             logger.debug("CORS must be handheld upstream.")
+        if (self.config.get('flask') or {}).get('JWT_SECRET_KEY'.lower()):
+            self.jwt_manager = JWTManager(self.flask_app)
 
     def setup_application(self, instance):
         Framework.setup_application(self, instance)
