@@ -69,7 +69,6 @@ def validate(vargs):
         if hasattr(args[0].framework, 'validate_query'):
             args[0].framework.validate_query(vargs)
         return func(*args, **kwargs)
-
     return decorator(helper)
 
 
