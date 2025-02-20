@@ -3,9 +3,9 @@ import configparser
 import traceback
 import logging
 import logging.config
-from cadre.controllers import Controller, load_controllers
-from cadre.framework import Framework, DumpRoutes
-from cadre.framework import framework_from_config, validate
+from encadre.controllers import Controller, load_controllers
+from encadre.framework import Framework, DumpRoutes
+from encadre.framework import framework_from_config, validate
 
 logger = logging.getLogger(__name__)
 
@@ -25,17 +25,17 @@ class NotReady:
         return False
 
 
-request = cookies = NotReady("Cadre is not setup yet.")
+request = cookies = NotReady("Encadre is not setup yet.")
 
 
-class Cadre():
+class Encadre():
 
     config = {}
 
     def __init__(self, config_filename):
         self.application = getattr(self, 'application',
                                    self.__class__.__name__.lower())
-        logger.debug("Starting cadre application '%s'." % self.application)
+        logger.debug("Starting encadre application '%s'." % self.application)
         self.config_filename = config_filename
         if self.config_filename:
             self.config.update(self.read_config(self.config_filename))
@@ -44,7 +44,7 @@ class Cadre():
             except Exception:
                 print("You'd better configure logging in '%s':\n%s" %
                       (self.config_filename, traceback.format_exc()))
-        setattr(sys.modules['cadre'], 'config', self.config)
+        setattr(sys.modules['encadre'], 'config', self.config)
 
     def read_config(self, filename):
         config = {self.__class__.__name__.lower(): {}}
@@ -77,4 +77,4 @@ class Cadre():
         return f.get_wsgi_app()
 
 
-__all__ = ['Cadre', 'Framework', 'Controller', 'validate']
+__all__ = ['Encadre', 'Framework', 'Controller', 'validate']

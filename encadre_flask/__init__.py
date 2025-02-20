@@ -4,7 +4,7 @@ import logging
 from flask import Flask, request, send_file, abort
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from cadre import Framework
+from encadre import Framework
 
 logger = logging.getLogger(__name__)
 

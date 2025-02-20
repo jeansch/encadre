@@ -3,7 +3,7 @@ import types
 import logging
 import unittest
 import pkg_resources
-from cadre.framework import Framework
+from encadre.framework import Framework
 
 logger = logging.getLogger(__name__)
 
@@ -63,7 +63,7 @@ def load_controllers(f, application):
         except ModuleNotFoundError:
             logger.error("Error importing '%s': %s" % (
                 ep, traceback.format_exc()))
-    for ep in pkg_resources.iter_entry_points('cadre.controllers'):
+    for ep in pkg_resources.iter_entry_points('encadre.controllers'):
         try:
             ep.load()
         except ModuleNotFoundError:
@@ -72,7 +72,7 @@ def load_controllers(f, application):
     setup_controllers(Controller, f)
 
 
-class CadreTestCase(unittest.TestCase):
+class EncadreTestCase(unittest.TestCase):
     def setUp(self):
         self.framework._json = {}
         self.framework._environ = {}
@@ -130,6 +130,6 @@ def get_controllers_tsts(app):
                     test_fct = getattr(cls, test_name, missing_test)
                     attributes[test_long_name] = test_fct
             test_cls = type("Test%s" % cls.__name__,
-                            (getattr(cls, 'testcase_cls', CadreTestCase), ),
+                            (getattr(cls, 'testcase_cls', EncadreTestCase), ),
                             attributes)
             yield (test_cls.__name__, test_cls)

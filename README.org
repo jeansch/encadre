@@ -1,6 +1,6 @@
-#+TITLE: This is the 'cadre' framework !
+#+TITLE: This is the 'encadre' framework !
 
-This is the cadre framework engine.
+This is the encadre framework engine.
 
 * Introduction
 
@@ -25,54 +25,54 @@ Your app *MUST* be packaged ! (also your controllers).
 from setuptools import setup
 
 console_scripts = """
-cadre-test-app-serve = cadre_test_app:serve
-cadre-test-app-dump-routes = cadre_test_app:dump_routes
+encadre-test-app-serve = encadre_test_app:serve
+encadre-test-app-dump-routes = encadre_test_app:dump_routes
 
 """
 
-setup(name='cadre_test_app',
+setup(name='encadre_test_app',
       version='0.1.0',
-      description="Cadre_Test_App framework",
+      description="Encadre_Test_App framework",
       author="Ubity Awesome Dev Team",
       author_email='dev@ubity.com',
-      packages=['cadre_test_app'],
-      install_requires=["Cadre"],
+      packages=['encadre_test_app'],
+      install_requires=["Encadre"],
       entry_points={'console_scripts': console_scripts,
-                    'cadre_test_app.controllers': [
-                        'hello = cadre_test_app_hello']},
+                    'encadre_test_app.controllers': [
+                        'hello = encadre_test_app_hello']},
       license='GPLv3')
 #+end_example python
 
-*** main (cadre_test_app/__init__.py)
+*** main (encadre_test_app/__init__.py)
 
 #+begin_example python
 import sys
-from cadre import Cadre
+from encadre import Encadre
 
-class Cadre_Test_App(Cadre):
+class Encadre_Test_App(Encadre):
     pass
 
 def serve():
     if len(sys.argv) != 2:
         print("Usage: %s config.ini")
         sys.exit(1)
-    Cadre_Test_App(sys.argv[1]).serve()
+    Encadre_Test_App(sys.argv[1]).serve()
 
 # tool to dump routes
 def dump_routes():
     if len(sys.argv) != 2:
         print("Usage: %s config.ini")
         sys.exit(1)
-    Cadre_Test_App(sys.argv[1]).dump_routes()
+    Encadre_Test_App(sys.argv[1]).dump_routes()
 #+end_example
 
 *** config.ini
 
 Should contains at least a section telling that we are using /flask/ (as this is the only sub framework implemented.
-The section name is you app name (ie: *cadre_test_app*).
+The section name is you app name (ie: *encadre_test_app*).
 
 #+begin_example
-[cadre_test_app]
+[encadre_test_app]
 framework = flask
 #+end_example
 
@@ -88,20 +88,20 @@ HOST = 0.0.0.0
 Optionnaly the *loggers* section.
 #+begin_example
 [loggers]
-keys = root, cadre, cadre_flask
+keys = root, encadre, encadre_flask
 
 [logger_root]
 handlers =
 
-[logger_cadre]
+[logger_encadre]
 level = DEBUG
 handlers = console
-qualname = cadre
+qualname = encadre
 
-[logger_cadre_flask]
+[logger_encadre_flask]
 level = DEBUG
 handlers = console
-qualname = cadre_flask
+qualname = encadre_flask
 
 [handlers]
 keys = console
@@ -116,10 +116,10 @@ class = StreamHandler
 args = (sys.stderr,)
 #+end_example
 
-*** a controller (cadre_test_app_hello/__init__.py)
+*** a controller (encadre_test_app_hello/__init__.py)
 
 #+begin_example python
-from cadre import Controller
+from encadre import Controller
 
 
 class Hello(Controller):
@@ -161,7 +161,7 @@ class Hello_2(Controller):
 
 #+begin_example
 python setup.py develop
-cadre_test_app-serve config.ini
+encadre_test_app-serve config.ini
 #+end_example
 
 ** Query it
@@ -176,7 +176,7 @@ curl http://localhost:5001/hello/
 
 **** Using headers
 #+begin_example
-curl http://localhost:5001/hello/ -H X-cadre_test_app-version:0
+curl http://localhost:5001/hello/ -H X-encadre_test_app-version:0
 #+end_example
 
 **** Using URL prefix
@@ -225,7 +225,7 @@ They are available in requests.args.
 class Foo(Controller):
 
     def bar(self):
-        from cadre import request
+        from encadre import request
         request.args.get('qwe')
 #+end_example
 
@@ -236,7 +236,7 @@ class Foo(Controller):
 class Foo(Controller):
 
     def bar(self):
-        from cadre import request
+        from encadre import request
         request.headers.get('X-Magic-Header')
 #+end_example
 
@@ -246,11 +246,11 @@ class Foo(Controller):
 class Foo(Controller):
 
     def bar_needs_cookie(self):
-        from cadre import request
+        from encadre import request
         request.cookies.get('my_great_cookie')
 
     def baz_set_cookie(self):
-        from cadre import request
+        from encadre import request
         request.cookies.set('my_great_cookie', 'my_great_value')
 #+end_example
 
@@ -261,7 +261,7 @@ class Foo(Controller):
 class Foo(Controller):
 
     def bar(self):
-        from cadre import request
+        from encadre import request
         request.json  # containt an object,
         # mostlikely a dict of the received JSON
 #+end_example
@@ -270,7 +270,7 @@ class Foo(Controller):
 
 #+begin_example
 python setup.py develop  # if not done already
-cadre_test_app-dump-routes
+encadre_test_app-dump-routes
 #+end_example
 
 ** Run with UWSGI
@@ -285,13 +285,13 @@ Can be added in /config.ini/
 #+begin_example
 [uwsgi]
 http = localhost:5001
-file = cadre_test_app.wsgi
+file = encadre_test_app.wsgi
 #+end_example
 
-*** loader cadre_test_app.wsgi
+*** loader encadre_test_app.wsgi
 #+begin_example python
-from cadre_test_app import Cadre_Test_App
-application = Cadre_Test_App("config.ini").get_wsgi_app()
+from encadre_test_app import Encadre_Test_App
+application = Encadre_Test_App("config.ini").get_wsgi_app()
 #+end_example
 
 *** start it
@@ -301,7 +301,7 @@ uwsgi config.ini
 #+end_example
 
 
-* Running 'cadre' tests
+* Running 'encadre' tests
 
 #+begin_example shell
 pip install nose coverage

@@ -92,9 +92,9 @@ class Framework():
         self.routes = {}
         self.controllers = {}
         self.request = self.request_class(self)
-        setattr(sys.modules['cadre'], 'request', self.request)
+        setattr(sys.modules['encadre'], 'request', self.request)
         self.cookies = self.cookies_class(self)
-        setattr(sys.modules['cadre'], 'cookies', self.cookies)
+        setattr(sys.modules['encadre'], 'cookies', self.cookies)
 
     def add_controller(self, ctrl, methods):
         ctrl_cls, ctrl_name, ctrl_version = ctrl
@@ -180,7 +180,7 @@ def framework_from_config(application, config):
     for ep in pkg_resources.iter_entry_points('%s.frameworks' % application):
         if ep.name == fw_name:
             return ep.load()(application, config)
-    for ep in pkg_resources.iter_entry_points('cadre.frameworks'):
+    for ep in pkg_resources.iter_entry_points('encadre.frameworks'):
         if ep.name == fw_name:
             return ep.load()(application, config)
     raise Exception("No framework available")

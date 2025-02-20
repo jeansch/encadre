@@ -1,6 +1,6 @@
 import unittest
 import random
-from cadre import Controller, validate
+from encadre import Controller, validate
 
 
 class Hello(Controller):
@@ -15,11 +15,11 @@ class Hello(Controller):
 
     def config(self):
         """ Dump the config """
-        from cadre import config
+        from encadre import config
         return config
 
     def test_config(self):
-        from cadre import config
+        from encadre import config
         k = 'test_%s' % random.randint(0, 1000)
         v = random.randint(0, 1000)
         config.update({k: v})
@@ -41,11 +41,11 @@ class Hello(Controller):
         'required': ['numbers']
     })
     def i_am_validated_POST(self):
-        from cadre import request
+        from encadre import request
         return request.json
 
     def test_i_am_validated_POST(self):
-        from cadre import request
+        from encadre import request
         request.json = {'numbers': [1, 2]}
         self.assertTrue(self.i_am_validated_POST() == {
             'numbers': [1, 2]})
@@ -66,11 +66,11 @@ class Hello(Controller):
         'required': ['numbers']
     })
     def i_will_not_pass_validation_POST(self):
-        from cadre import request
+        from encadre import request
         return request.json
 
     def test_i_will_not_pass_validation_POST(self):
-        from cadre import request
+        from encadre import request
         request.json = {'xnumbers': [1, 2]}
         self.i_am_validated_POST()
         self.assertRaises(Exception)
@@ -112,11 +112,11 @@ class Hello_2(Controller):
         assert True
 
     def baz_POST(self):
-        from cadre import request
+        from encadre import request
         return request.json
 
     def test_baz_POST(self):
-        from cadre import request
+        from encadre import request
         k = 'test_%s' % random.randint(0, 1000)
         v = random.randint(0, 1000)
         request.json = {k: v}
@@ -129,11 +129,11 @@ class Hello_2(Controller):
         assert True
 
     def args(self):
-        from cadre import request
+        from encadre import request
         return request.args.get('qwe', "no 'qwe' arg")
 
     def test_args(self):
-        from cadre import request
+        from encadre import request
         v = 'test_%s' % random.randint(0, 1000)
         request.args['qwe'] = v
         self.assertTrue(self.args() == v)

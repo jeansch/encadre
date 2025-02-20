@@ -1,23 +1,23 @@
 from setuptools import setup
 
 console_scripts = """
-cadre-test-app-serve = cadre_test_app:serve
-cadre-test-app-dump-routes = cadre_test_app:dump_routes
+encadre-test-app-serve = encadre_test_app:serve
+encadre-test-app-dump-routes = encadre_test_app:dump_routes
 """
 
-setup(name='cadre',
+setup(name='encadre',
       version='0.1.1',
-      description="Cadre framework",
+      description="Encadre framework",
       author="Jean Schurger",
       author_email='jean@schurger.org',
-      packages=['cadre', 'cadre_flask'],
+      packages=['encadre', 'encadre_flask'],
       install_requires=['Flask', 'fastjsonschema', 'flask-cors',
                         'decorator', 'nose', 'coverage', 'flask_jwt_extended'],
       entry_points={
           'console_scripts': console_scripts,
-          'cadre.frameworks':
-          ['flask = cadre_flask:FlaskFramework'],
-          'cadre_test_app.controllers':
-          ['test_controllers = cadre_test_controllers']
+          'encadre.frameworks':
+          ['flask = encadre_flask:FlaskFramework'],
+          'encadre_test_app.controllers':
+          ['test_controllers = encadre_test_controllers']
       },
       license='GPLv3')

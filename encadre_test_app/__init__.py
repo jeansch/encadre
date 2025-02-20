@@ -1,13 +1,13 @@
 import sys
 
 import fastjsonschema
-from cadre import Cadre
+from encadre import Encadre
 
 
-class Cadre_Test_App(Cadre):
+class Encadre_Test_App(Encadre):
 
     def validate_query(self, schema):
-        from cadre import request
+        from encadre import request
         fastjsonschema.compile(schema)(request.json)
 
 
@@ -15,11 +15,11 @@ def serve():
     if len(sys.argv) != 2:
         print("Usage: %s config.ini")
         sys.exit(1)
-    Cadre_Test_App(sys.argv[1]).serve()
+    Encadre_Test_App(sys.argv[1]).serve()
 
 
 def dump_routes():
     if len(sys.argv) != 2:
         print("Usage: %s config.ini")
         sys.exit(1)
-    Cadre_Test_App(sys.argv[1]).dump_routes()
+    Encadre_Test_App(sys.argv[1]).dump_routes()

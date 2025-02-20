@@ -1,25 +1,25 @@
 import unittest
-from cadre import Cadre
-from cadre.framework import framework_from_config
-from cadre.controllers import load_controllers
+from encadre import Encadre
+from encadre.framework import framework_from_config
+from encadre.controllers import load_controllers
 
 
-class CadreFlask(Cadre):
+class EncadreFlask(Encadre):
 
-    application = 'cadre_test_app'
+    application = 'encadre_test_app'
 
     def __init__(self):
-        Cadre.__init__(self, None)
+        Encadre.__init__(self, None)
         self.framework = framework_from_config(self.application,
                                                {self.application:
                                                 {'framework': 'flask'}})
         load_controllers(self.framework, self.application)
 
 
-class TestCadreFlask(unittest.TestCase):
+class TestEncadreFlask(unittest.TestCase):
 
     def setUp(self):
-        self.cadre = CadreFlask()
+        self.encadre = EncadreFlask()
 
     def test_setup_routes(self):
-        self.cadre.framework._setup_routes()
+        self.encadre.framework._setup_routes()
