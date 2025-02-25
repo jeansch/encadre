@@ -23,7 +23,6 @@ class Controller():
             version = int(version)
         else:
             version = framework.first_version
-
         for name in [a for a in dir(cls) if a[0] != '_']:
             attr = getattr(cls, name)
             if isinstance(attr, types.FunctionType) and \
@@ -50,8 +49,10 @@ class Controller():
 
 
 def setup_controllers(cls, f, level=0):
+    logger.debug("Setup controller '%s' (children: '%s')." % (cls, cls.__subclasses__()))
     if cls.__name__ != 'Controller':  # exclude abstract
-        cls.setup(f, root=level < 2)
+        if not cls.__name__.startswith('_'):
+            cls.setup(f, root=level < 2)
     for sub in cls.__subclasses__():
         setup_controllers(sub, f, level + 1)
 
@@ -60,6 +61,7 @@ def load_controllers(f, application):
     for ep in pkg_resources.iter_entry_points('%s.controllers' % application):
         try:
             ep.load()
+            logger.debug("Loaded controller '%s'" % ep)
         except ModuleNotFoundError:
             logger.error("Error importing '%s': %s" % (
                 ep, traceback.format_exc()))
