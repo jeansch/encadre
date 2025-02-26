@@ -6,7 +6,7 @@ encadre-test-app-dump-routes = encadre_test_app:dump_routes
 """
 
 setup(name='encadre',
-      version='0.1.1',
+      version='0.1.2',
       description="Encadre framework",
       author="Jean Schurger",
       author_email='jean@schurger.org',
