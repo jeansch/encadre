@@ -49,7 +49,8 @@ class Controller():
 
 
 def setup_controllers(cls, f, level=0):
-    logger.debug("Setup controller '%s' (children: '%s')." % (cls, cls.__subclasses__()))
+    logger.debug("Setup controller '%s' (children: '%s')." % (
+        cls, cls.__subclasses__()))
     if cls.__name__ != 'Controller':  # exclude abstract
         if not cls.__name__.startswith('_'):
             cls.setup(f, root=level < 2)
