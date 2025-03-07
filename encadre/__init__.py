@@ -45,6 +45,10 @@ class Encadre():
                 print("You'd better configure logging in '%s':\n%s" %
                       (self.config_filename, traceback.format_exc()))
         setattr(sys.modules['encadre'], 'config', self.config)
+        self.framework = framework_from_config(self.__class__.__name__.lower(),
+                                               self.config)
+        self.framework.setup_application(self)
+        load_controllers(self.framework, self.application)
 
     def read_config(self, filename):
         config = {self.__class__.__name__.lower(): {}}
@@ -57,24 +61,18 @@ class Encadre():
 
     def serve(self):
         assert self.config, "Missing config."
-        f = framework_from_config(self.__class__.__name__.lower(), self.config)
-        f.setup_application(self)
-        load_controllers(f, self.application)
-        f.serve()
+        self.framework.serve()
 
     def dump_routes(self):
         assert self.config, "Missing config."
-        f = DumpRoutes(self.__class__.__name__.lower(), self.config)
-        load_controllers(f, self.application)
-        print(f)
+        routes = DumpRoutes(self.__class__.__name__.lower(), self.config)
+        load_controllers(routes, self.application)
+        print(routes)
 
     def get_wsgi_app(self):
         config = self.read_config(self.config_filename)
         assert config, "Missing config."
-        f = framework_from_config(self.__class__.__name__.lower(), config)
-        f.setup_application(self)
-        load_controllers(f, self.application)
-        return f.get_wsgi_app()
+        return self.framework.get_wsgi_app()
 
 
 __all__ = ['Encadre', 'Framework', 'Controller', 'validate']
