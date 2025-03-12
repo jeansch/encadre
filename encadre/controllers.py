@@ -40,10 +40,18 @@ class Controller():
                         # Prevent inheritance of index__
                         if root_id == id(attr):
                             continue
-                methods.append(
-                    (name, attr,
-                     attr.__code__.co_varnames[1:attr.__code__.co_argcount],
-                     verbs if verbs != [''] else ['GET']))
+                # dig into decorator
+                if hasattr(attr, '__wrapped__'):
+                    methods.append(
+                        (name, attr,
+                         attr.__wrapped__.__code__.co_varnames[
+                             1:attr.__wrapped__.__code__.co_argcount],
+                         verbs if verbs != [''] else ['GET']))
+                else:
+                    methods.append(
+                        (name, attr,
+                         attr.__code__.co_varnames[1:attr.__code__.co_argcount],
+                         verbs if verbs != [''] else ['GET']))
         framework.add_controller((cls, '__root__' if root else ctrl_name,
                                   version), methods)
 
