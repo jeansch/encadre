@@ -29,7 +29,7 @@ class FlaskFramework(Framework):
             self.flask_app.config[k.upper()] = _v
         if not (self.config.get('flask') or {}).get('external_cors'):
             logger.debug("We handle CORS.")
-            CORS(self.flask_app)
+            CORS(self.flask_app, supports_credentials=True)
         else:
             logger.debug("CORS must be handheld upstream.")
         if (self.config.get('flask') or {}).get('JWT_SECRET_KEY'.lower()):
@@ -128,14 +128,14 @@ class FlaskFramework(Framework):
                                         getattr(self, '_m_%s_%s' % methods[e]),
                                         methods=verbs)
 
-    def serve(self):
+    def serve(self, **kwargs):
         self._setup_routes()
         self.flask_app.run(
             host=self.flask_app.config.get('HOST', '0.0.0.0'),
             port=self.flask_app.config.get('PORT', 5001),
             debug=self.flask_app.config.get('DEBUG', True),
             threaded=self.flask_app.config.get('THREADED', False),
-        )
+            **kwargs)
 
     def get_wsgi_app(self):
         self._setup_routes()
