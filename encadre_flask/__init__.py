@@ -135,8 +135,8 @@ class FlaskFramework(Framework):
         SSL_KEY_FILE = os.getenv('SSL_KEY_FILE')
         if SSL_CERT_FILE and SSL_KEY_FILE:
             kwargs['ssl_context'] = (
-                app.config['SSL_CERT_FILE'],
-                app.config['SSL_KEY_FILE'])
+                os.getenv('SSL_CERT_FILE'),
+                os.getenv('SSL_KEY_FILE'))
         self.flask_app.run(
             host=self.flask_app.config.get('HOST', '0.0.0.0'),
             port=self.flask_app.config.get('PORT', 5001),
