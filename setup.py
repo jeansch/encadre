@@ -6,13 +6,14 @@ encadre-test-app-dump-routes = encadre_test_app:dump_routes
 """
 
 setup(name='encadre',
-      version='0.1.3',
+      version='0.1.4',
       description="Encadre framework",
       author="Jean Schurger",
       author_email='jean@schurger.org',
       packages=['encadre', 'encadre_flask'],
       install_requires=['Flask', 'fastjsonschema', 'flask-cors',
-                        'decorator', 'nose', 'coverage', 'flask_jwt_extended'],
+                        'decorator', 'nose', 'coverage', 'flask_jwt_extended',
+                        'cryptography'],
       entry_points={
           'console_scripts': console_scripts,
           'encadre.frameworks':
