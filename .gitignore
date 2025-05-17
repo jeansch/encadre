@@ -1,3 +1,6 @@
 .coverage
 .DS_Store
 README.html
+encadre.egg-info/
+encadre/__pycache__/
+encadre_flask/__pycache__/

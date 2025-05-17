@@ -165,6 +165,9 @@ class FlaskFramework(Framework):
     def request_args(self):
         return request.args
 
+    def request_files(self):
+        return request.files
+
     def get_cookie(self, key):
         return request.cookies.get(key)
 

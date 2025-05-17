@@ -26,6 +26,7 @@ class Request():
         self._environ = None
         self._headers = None
         self._args = None
+        self._files = None
 
     def _get_json(self):
         return self._json or self.f.request_json()
@@ -62,6 +63,15 @@ class Request():
         self._args = args
 
     args = property(_get_args, _set_args)
+
+    def _get_files(self):
+        return self._files or self.f.request_files()
+
+    # Let unit tests set files
+    def _set_files(self, files):
+        self._files = files
+
+    files = property(_get_files, _set_files)
 
 
 def validate(vargs):
@@ -135,7 +145,7 @@ class Framework():
         raise ENI
 
     request_json = request_environ = request_headers = \
-        request_args = get_cookie = set_cookie = send_bytes = not_implemented
+        request_args = request_files = get_cookie = set_cookie = send_bytes = not_implemented
 
     def format_exception(self, e):
         ret = None
