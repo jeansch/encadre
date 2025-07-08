@@ -165,6 +165,9 @@ class FlaskFramework(Framework):
     def request_args(self):
         return request.args
 
+    def request_form(self):
+        return request.form
+
     def request_files(self):
         return request.files
 
