@@ -1,7 +1,7 @@
 import sys
 import logging
-import pkg_resources
 import traceback
+from importlib.metadata import entry_points
 from decorator import decorator
 
 logger = logging.getLogger(__name__)
@@ -199,10 +199,11 @@ class DumpRoutes(Framework):
 def framework_from_config(application, config):
     fw_name = (config.get(application) or {}).get('framework')
     assert fw_name, "No framework configured."
-    for ep in pkg_resources.iter_entry_points('%s.frameworks' % application):
-        if ep.name == fw_name:
-            return ep.load()(application, config)
-    for ep in pkg_resources.iter_entry_points('encadre.frameworks'):
-        if ep.name == fw_name:
-            return ep.load()(application, config)
+    eps = entry_points()
+    app_group = '%s.frameworks' % application
+    for group in (app_group, 'encadre.frameworks'):
+        group_eps = eps.get(group, [])
+        for ep in group_eps:
+            if ep.name == fw_name:
+                return ep.load()(application, config)
     raise Exception("No framework available")

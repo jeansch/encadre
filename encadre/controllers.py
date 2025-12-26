@@ -2,7 +2,7 @@ import traceback
 import types
 import logging
 import unittest
-import pkg_resources
+from importlib.metadata import entry_points
 from encadre.framework import Framework
 
 logger = logging.getLogger(__name__)
@@ -67,19 +67,16 @@ def setup_controllers(cls, f, level=0):
 
 
 def load_controllers(f, application):
-    for ep in pkg_resources.iter_entry_points('%s.controllers' % application):
-        try:
-            ep.load()
-            logger.debug("Loaded controller '%s'" % ep)
-        except ModuleNotFoundError:
-            logger.error("Error importing '%s': %s" % (
-                ep, traceback.format_exc()))
-    for ep in pkg_resources.iter_entry_points('encadre.controllers'):
-        try:
-            ep.load()
-        except ModuleNotFoundError:
-            logger.error("Error importing '%s': %s" % (
-                ep, traceback.format_exc()))
+    eps = entry_points()
+    app_group = '%s.controllers' % application
+    for group in (app_group, 'encadre.controllers'):
+        for ep in eps.get(group, []):
+            try:
+                ep.load()
+                logger.debug("Loaded controller '%s'" % ep)
+            except ModuleNotFoundError:
+                logger.error("Error importing '%s': %s" % (
+                    ep, traceback.format_exc()))
     setup_controllers(Controller, f)
 
 
