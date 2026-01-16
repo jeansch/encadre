@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "encadre"
-version = "0.2.0"
+version = "0.3.0"
 description = "Encadre framework"
 authors = [
     {name = "Jean Schurger", email = "jean@schurger.org"}
 ]
 license = {text = "GPLv3"}
-requires-python = ">=3.10,<3.12"
+requires-python = ">=3.13"
 dependencies = [
     "Flask",
     "fastjsonschema",

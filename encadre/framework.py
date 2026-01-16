@@ -199,10 +199,9 @@ class DumpRoutes(Framework):
 def framework_from_config(application, config):
     fw_name = (config.get(application) or {}).get('framework')
     assert fw_name, "No framework configured."
-    eps = entry_points()
     app_group = '%s.frameworks' % application
     for group in (app_group, 'encadre.frameworks'):
-        group_eps = eps.get(group, [])
+        group_eps = entry_points(group=group)
         for ep in group_eps:
             if ep.name == fw_name:
                 return ep.load()(application, config)

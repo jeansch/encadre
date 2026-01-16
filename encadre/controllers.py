@@ -67,10 +67,9 @@ def setup_controllers(cls, f, level=0):
 
 
 def load_controllers(f, application):
-    eps = entry_points()
     app_group = '%s.controllers' % application
     for group in (app_group, 'encadre.controllers'):
-        for ep in eps.get(group, []):
+        for ep in entry_points(group=group):
             try:
                 ep.load()
                 logger.debug("Loaded controller '%s'" % ep)
